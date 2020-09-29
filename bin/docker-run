@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+#sudo docker run --publish 9090:9090 --detach --name rave rave:latest
+sudo docker run --publish 9090:9090 --name rave rave:latest

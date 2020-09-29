@@ -91,6 +91,7 @@
         target (BufferedImage. width
                                height
                                BufferedImage/TYPE_INT_RGB)]
+    ;; TODO: fix reflection warnings
     (doto (.createGraphics target)
       (.setColor Color/WHITE) ; TODO: customize background?
       (.fillRect 0 0 width height)
@@ -100,9 +101,6 @@
 
 (defn process-upload
   [req]
-  #_ (debug req)
-  (pprint req)
-
   ;; TODO: validate request
   (let [{:keys [content-type bytes]} (get-in req [:multipart-params "image"])
         id                           (uuid)]
