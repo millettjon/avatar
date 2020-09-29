@@ -11,8 +11,11 @@
          ring/ring-core          {:mvn/version "1.8.1"}
          ring/ring-devel         {:mvn/version "1.8.1"}
          ring/ring-jetty-adapter {:mvn/version "1.8.1"}
+         compojure/compojure     {:mvn/version "1.6.2"} ; routing
+         ;;metosin/compojure-api {:mvn/version "2.0.0-alpha31"} ; routing, swagger api
+         hiccup/hiccup           {:mvn/version "1.0.5"} ; html generation
 
-         compojure/compojure    {:mvn/version "1.6.2"}   ; routing
+         net.mikera/imagez      {:mvn/version "0.12.0"}  ; image processing
          org.clojure/data.json  {:mvn/version "1.0.0"}
          org.clojure/spec.alpha {:mvn/version "0.2.187"} ; validation
          com.taoensso/timbre    {:mvn/version "5.0.1"}   ; logging
