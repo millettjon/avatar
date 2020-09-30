@@ -1,5 +1,6 @@
 (ns rave.avatar.core
-  (:require [ring.adapter.jetty :refer [run-jetty]]
+  (:require [ring.component.jetty :refer [jetty-server]]
+            [com.stuartsierra.component :as component]
             [ring.middleware.multipart-params :refer [wrap-multipart-params]]
             [ring.middleware.multipart-params.byte-array :refer [byte-array-store]]
             [ring.middleware.reload :refer [wrap-reload]]
@@ -21,8 +22,7 @@
 ;; - http://javadox.com/org.imgscalr/imgscalr-lib/4.2/org/imgscalr/Scalr.html
 
 ;; ----- CONFIGURATION -----
-(def service-port 9090)
-(def image-path "/images")
+(def port 9090)
 (def image-sizes {:small {:px 75  :quality 0.7}
                   :med   {:px 150 :quality 0.7}
                   :large {:px 300 :quality 0.8}})
@@ -45,15 +45,14 @@
   (str (-> req :scheme name)
        "://"
        (get-in req [:headers "host"])
-       image-path
-       "/"
+       "/images/"
        id
        "-"
        (name size)
        ".jpg"))
 
 (defn image-urls
-  "Returns a map of all urls for an images with id."
+  "Returns a map of urls by image size for an image id."
   [req id]
   (reduce (fn [m size]
             (assoc m size (image-url req id size)))
@@ -104,8 +103,6 @@
   ;; TODO: validate request
   (let [{:keys [content-type bytes]} (get-in req [:multipart-params "image"])
         id                           (uuid)]
-    ;; TODO: ? does this handle png?
-    ;; TODO: ? can the same base image be used to create all versions?
     (let [orig (-> bytes input-stream img/load-image)
 
           ;; Process source image into target sizes.
@@ -172,7 +169,7 @@
 (defroutes app
   (GET  "/"              [] "Image server home page")
   (GET  "/images/:image" [] serve-image)
-  (GET  image-path       [] list-images)
+  (GET  "/images"        [] list-images)
   (GET  "/gallery"       [] gallery)
   (POST "/upload"        [] (-> process-upload
                                 ;; Store uploads in memory instead of temp file per requirement.
@@ -182,9 +179,12 @@
 (def reloadable-app
   (wrap-reload #'app))
 
+(def http-server
+  (jetty-server {:app  {:handler reloadable-app}
+                 :port port}))
+
 (defn -main
   [& _args]
   (info "Starting server")
-  (run-jetty reloadable-app {:port service-port
-                             :join? false}))
+  (alter-var-root #'http-server component/start))
 #_ (-main)

@@ -7,12 +7,15 @@
 {:paths ["src"]
  :deps  {org.clojure/clojure {:mvn/version "1.10.1"}
 
+         ;; component
+         com.stuartsierra/component                {:mvn/version "1.0.0"}
+         ring-jetty-component/ring-jetty-component {:mvn/version "0.3.1"}
+
          ;; ring
          ring/ring-core          {:mvn/version "1.8.1"}
          ring/ring-devel         {:mvn/version "1.8.1"}
          ring/ring-jetty-adapter {:mvn/version "1.8.1"}
          compojure/compojure     {:mvn/version "1.6.2"} ; routing
-         ;;metosin/compojure-api {:mvn/version "2.0.0-alpha31"} ; routing, swagger api
          hiccup/hiccup           {:mvn/version "1.0.5"} ; html generation
 
          net.mikera/imagez      {:mvn/version "0.12.0"}  ; image processing
@@ -29,9 +32,22 @@
            :nrepl {:extra-deps {cider/cider-nrepl {:mvn/version "0.25.3"}}
                    :main-opts  ["-m" "nrepl.cmdline" "--middleware" "[cider.nrepl/cider-middleware]"]}
 
+           ;; common test deps
+           :test {:extra-paths ["test"]
+                  :extra-deps  {clj-http/clj-http      {:mvn/version "3.10.3"}
+                                org.clojure/test.check {:mvn/version "1.1.0"}}}
+
+           ;; run tests
+           :kaocha {:extra-deps    {lambdaisland/kaocha {:mvn/version "1.0.700"}}
+                    #_#_:main-opts ["-m" "kaocha.runner" "--watch"]}
+
+           ;; test coverage report
+           :cloverage {:extra-deps {cloverage/cloverage {:mvn/version "1.1.2" #_ "1.2.1"}}
+                       :main-opts  ["-m" "cloverage.coverage" "-p" "src" "-s" "test"]}
+
            :uberdeps {:extra-deps {uberdeps/uberdeps {:mvn/version "1.0.2"}}
-                      :main-opts ["-m" "uberdeps.uberjar"]}
+                      :main-opts  ["-m" "uberdeps.uberjar"]}
 
            ;; List outdated dependencies.
            :outdated {:extra-deps {olical/depot {:mvn/version "1.8.4"}}
-                      :main-opts  ["-m" "depot.outdated.main"]}}}
+                      :main-opts  ["-m" "depot.outdated.main" "--every"]}}}
