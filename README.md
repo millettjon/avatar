@@ -21,6 +21,13 @@ $ xdg-open http://localhost:9090/gallery
 ``` shell
 $ http --verbose -f POST http://localhost:9090/upload image@test/iroh.jpg
 $ http --verbose -f POST http://localhost:9090/upload image@test/dog.png
+$ http --verbose -f POST http://localhost:9090/upload image@test/lighthouse.gif
+$ http --verbose -f POST http://localhost:9090/upload image@test/zissou.webp
+```
+
+## View a single images.
+``` shell
+$ xdg-open http://localhost:9090/image/<UUID>-<SIZE>.<EXTENSION>
 ```
 
 ## List all images as json.
@@ -34,13 +41,6 @@ $ bin/kaocha-watch
 ```
 
 ## TODO
-- factor out namespaces for
-  - config
-  - data access
-  - image manipulations
 - fix reflection warning
-- add validation and error handling
-  - spec? expound?
 - add ring exception handler
 - store data in postgres
-- upload gif and convert to webp

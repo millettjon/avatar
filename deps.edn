@@ -18,7 +18,9 @@
          compojure/compojure     {:mvn/version "1.6.2"} ; routing
          hiccup/hiccup           {:mvn/version "1.0.5"} ; html generation
 
-         net.mikera/imagez      {:mvn/version "0.12.0"}  ; image processing
+         net.mikera/imagez              {:mvn/version "0.12.0"} ; image processing
+         org.sejda.imageio/webp-imageio {:mvn/version "0.1.6"}  ; webp encode/decode
+
          org.clojure/data.json  {:mvn/version "1.0.0"}
          org.clojure/spec.alpha {:mvn/version "0.2.187"} ; validation
          com.taoensso/timbre    {:mvn/version "5.0.1"}   ; logging
